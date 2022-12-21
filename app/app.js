@@ -10,8 +10,9 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 const user = require('./src/routes/user');
+const posts = require('./src/routes/posts');
 
-app.use('/api', [user]);
+app.use('/api', [user, posts]);
 
 app.use('/', (req, res) => {
   res.send('Hi, SeongHun');
