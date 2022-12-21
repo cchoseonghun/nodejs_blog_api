@@ -9,8 +9,12 @@ class UserStorage {
     const password = userInfo.password;
 
     return new Promise((resolve, reject) => {
-      User.create({ nickname, password }).then(() => {
+      User.create({ nickname, password })
+      .then(() => {
         resolve({ code: 201, message: '회원가입에 성공하였습니다.' });
+      })
+      .catch((err) => {
+        reject(err);
       });
     });
   };
@@ -19,8 +23,12 @@ class UserStorage {
     const nickname = userInfo.nickname;
     
     return new Promise((resolve, reject) => {
-      User.findOne({ where: { nickname } }).then((user) => {
+      User.findOne({ where: { nickname } })
+      .then((user) => {
         resolve(user);
+      })
+      .catch((err) => {
+        reject(err);
       });
     });
   }
