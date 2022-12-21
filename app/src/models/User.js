@@ -2,7 +2,6 @@
 
 require('dotenv').config();
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 
 const UserStorage = require('./UserStorage');
 const TokenStorage = require('./TokenStorage');
@@ -11,7 +10,6 @@ const TokenManager = require('../config/TokenManager');
 class User {
   constructor(body) {
     this.body = body;
-    this.SECRET_KEY = process.env.JWT_SECRET_KEY;
   };
 
   async #encryptPassword(userInfo) {
