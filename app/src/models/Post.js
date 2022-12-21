@@ -36,6 +36,15 @@ class Post {
       return { code: 400, message: '게시글 조회에 실패하였습니다.' };
     }
   };
+
+  async update() {
+    let postInfo = this.body;
+    try {
+      return await PostStorage.update(postInfo);
+    } catch (err) {
+      return { code: 400, message: '게시글 수정에 실패하였습니다.' };
+    }
+  };
 }
 
 module.exports = Post;

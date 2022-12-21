@@ -18,7 +18,7 @@ class PostStorage {
         reject(err);
       });
     });
-  }
+  };
 
   static findAll() {
     return new Promise((resolve, reject) => {
@@ -40,7 +40,7 @@ class PostStorage {
         reject(err);
       });
     });
-  }
+  };
 
   static findOne(postId) {
     return new Promise((resolve, reject) => {
@@ -60,7 +60,33 @@ class PostStorage {
         reject(err);
       });
     });
-  }
+  };
+
+  static update(postInfo) {
+    const postId = postInfo.postId;
+    const userId = postInfo.userId;
+    const title = postInfo.title;
+    const content = postInfo.content;
+
+    return new Promise((resolve, reject) => {
+      Post.update({ 
+        title, content
+      }, {
+        where: { postId, userId }
+      })
+      .then((result) => {
+        // accessToken 주인의 작성글이 아닌 경우 등의 이유로 수정된 컬럼이 없을 경우 체크
+        if (result[0] > 0) {  
+          resolve({ code: 200, message: '게시글을 수정하였습니다.' });
+        } else {
+          resolve({ code: 401, message: '게시글이 정상적으로 수정되지 않았습니다.' });
+        }
+      })
+      .catch((err) => {
+        reject(err);
+      });
+    });
+  };
 
 }
 

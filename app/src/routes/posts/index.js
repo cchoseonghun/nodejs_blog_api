@@ -10,5 +10,6 @@ router.get('/posts', ctrl.process.list);
 router.get('/posts/:postId', ctrl.process.detail);
 
 router.post('/posts', authMiddleware, ctrl.process.write);
+router.put('/posts/:postId', authMiddleware, ctrl.process.update);
 
 module.exports = router;

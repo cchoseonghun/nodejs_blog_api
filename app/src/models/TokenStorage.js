@@ -14,7 +14,7 @@ class TokenStorage {
         reject(err);
       });
     });
-  }
+  };
 
   static getTokenInfo(refreshToken) {
     return new Promise((resolve, reject) => {
@@ -26,7 +26,8 @@ class TokenStorage {
         reject(err);
       });
     });
-  }
+  };
+  
 }
 
 module.exports = TokenStorage;
