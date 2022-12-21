@@ -16,7 +16,7 @@ class Post {
     } catch (err) {
       return { code: 400, message: '게시글 작성에 실패하였습니다.' };
     }
-  }
+  };
 
   async list() {
     try {
@@ -25,7 +25,17 @@ class Post {
     } catch (err) {
       return { code: 400, message: '게시글 조회에 실패하였습니다.' };
     }
-  }
+  };
+
+  async detail() {
+    try {
+      const { postId } = this.body;
+      const post = await PostStorage.findOne(parseInt(postId));
+      return { code: 200, data: post };
+    } catch (err) {
+      return { code: 400, message: '게시글 조회에 실패하였습니다.' };
+    }
+  };
 }
 
 module.exports = Post;

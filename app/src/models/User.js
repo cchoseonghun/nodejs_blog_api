@@ -82,7 +82,7 @@ class User {
   };
 
   async login() {
-    let userInfo = this.body;
+    const userInfo = this.body;
     try {
       const user = await UserStorage.getUserInfo(userInfo);
       if (user) {

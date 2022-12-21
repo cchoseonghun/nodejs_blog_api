@@ -22,6 +22,17 @@ const process = {
       return res.status(response.code).json({ message: response.message });
     }
   }, 
+
+  detail: async (req, res) => {
+    const post = new Post(req.params);
+    const response = await post.detail();
+
+    if (response.data) {
+      return res.status(response.code).json({ data: response.data });
+    } else {
+      return res.status(response.code).json({ message: response.message });
+    }
+  }, 
 }
 
 module.exports = {
