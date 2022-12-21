@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 
 const UserStorage = require('./UserStorage');
 const TokenStorage = require('./TokenStorage');
+const TokenManager = require('../config/TokenManager');
 
 class User {
   constructor(body) {
@@ -38,26 +39,6 @@ class User {
         }
       });
     });
-  };
-
-  async #createAccessToken(userId) {
-    const expiresIn = process.env.JWT_ACCESS_EXPIRES;
-    const accessToken = jwt.sign(
-      { userId }, 
-      this.SECRET_KEY, 
-      { expiresIn } 
-    )
-    return accessToken;
-  };
-
-  async #createRefreshToken() {
-    const expiresIn = process.env.JWT_REFRESH_EXPIRES;
-    const refreshToken = jwt.sign(
-      {},
-      this.SECRET_KEY,
-      { expiresIn }
-    )
-    return refreshToken;
   };
 
   #checkRegisterValue(userInfo) {
@@ -109,8 +90,8 @@ class User {
       if (user) {
         if (await this.#checkPassword(userInfo.password, user.password)) {
           // 로그인 토큰 처리
-          const accessToken = await this.#createAccessToken(user.userId);
-          const refreshToken = await this.#createRefreshToken();
+          const accessToken = await TokenManager.createAccessToken(user.userId);
+          const refreshToken = await TokenManager.createRefreshToken();
 
           // refreshToken 저장
           await TokenStorage.save(refreshToken, user.userId);

@@ -11,7 +11,7 @@ class UserStorage {
     return new Promise((resolve, reject) => {
       User.create({ nickname, password }).then(() => {
         resolve({ code: 201, message: '회원가입에 성공하였습니다.' });
-      })
+      });
     });
   };
 
@@ -21,7 +21,7 @@ class UserStorage {
     return new Promise((resolve, reject) => {
       User.findOne({ where: { nickname } }).then((user) => {
         resolve(user);
-      })
+      });
     });
   }
 }

@@ -8,7 +8,15 @@ class TokenStorage {
     return new Promise((resolve, reject) => {
       Token.create({ refreshToken, userId }).then(() => {
         resolve();
-      })
+      });
+    });
+  }
+
+  static getTokenInfo(refreshToken) {
+    return new Promise((resolve, reject) => {
+      Token.findOne({ where: { refreshToken } }).then((token) => {
+        resolve(token);
+      });
     });
   }
 }

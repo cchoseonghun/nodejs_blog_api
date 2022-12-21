@@ -1,15 +1,14 @@
 'use strict';
 
-// const User = require('../../models/User');
+const Post = require('../../models/Post');
 
 const process = {
   
   write: async (req, res) => {
-    // const user = new User(req.body);
-    // const response = await user.register();
+    const post = new Post(req.body);
+    const response = await post.write();
 
-    // return res.status(response.code).json({ message: response.message });
-    return res.status(200).json({ message: 'hi' });
+    return res.status(response.code).json({ message: response.message });
   }, 
 
 }
