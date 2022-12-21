@@ -1,6 +1,6 @@
 'use strict';
 
-const  {User } = require('../sequelize/models');
+const  { User } = require('../sequelize/models');
 
 class UserStorage {
 
@@ -9,8 +9,9 @@ class UserStorage {
     const password = userInfo.password;
 
     return new Promise((resolve, reject) => {
-      User.create({ nickname, password });
-      resolve({ code: 201, message: '회원가입에 성공하였습니다.' });
+      User.create({ nickname, password }).then(() => {
+        resolve({ code: 201, message: '회원가입에 성공하였습니다.' });
+      })
     });
   };
 
@@ -18,8 +19,9 @@ class UserStorage {
     const nickname = userInfo.nickname;
     
     return new Promise((resolve, reject) => {
-      const user = User.findOne({ where: { nickname } });
-      resolve(user);
+      User.findOne({ where: { nickname } }).then((user) => {
+        resolve(user);
+      })
     });
   }
 }

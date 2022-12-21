@@ -2,16 +2,19 @@
 
 require('dotenv').config();
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const UserStorage = require('./UserStorage');
+const TokenStorage = require('./TokenStorage');
 
 class User {
   constructor(body) {
     this.body = body;
+    this.SECRET_KEY = process.env.JWT_SECRET_KEY;
   };
 
-  async #encryptPsword(userInfo) {
-    const saltRounds = parseInt(process.env.SALT);
+  async #encryptPassword(userInfo) {
+    const saltRounds = parseInt(process.env.BCRYPT_SALT);
 
     return new Promise((resolve, reject) => {
       bcrypt.hash(userInfo.password, saltRounds, (err, hash)=>{
@@ -23,6 +26,38 @@ class User {
         }
       });
     });
+  };
+
+  async #checkPassword(beforePassword, afterPassword) {
+    return new Promise((resolve, reject) => {
+      bcrypt.compare(beforePassword, afterPassword, (err, result)=>{
+        if (err) {
+          reject(`${err}`);
+        } else {
+          resolve(result);
+        }
+      });
+    });
+  };
+
+  async #createAccessToken(userId) {
+    const expiresIn = process.env.JWT_ACCESS_EXPIRES;
+    const accessToken = jwt.sign(
+      { userId }, 
+      this.SECRET_KEY, 
+      { expiresIn } 
+    )
+    return accessToken;
+  };
+
+  async #createRefreshToken() {
+    const expiresIn = process.env.JWT_REFRESH_EXPIRES;
+    const refreshToken = jwt.sign(
+      {},
+      this.SECRET_KEY,
+      { expiresIn }
+    )
+    return refreshToken;
   };
 
   #checkRegisterValue(userInfo) {
@@ -41,11 +76,10 @@ class User {
 
 
     return checkResult;
-  }
+  };
 
   async register() {
     let userInfo = this.body;
-
     try {
       // input값에 대해 여러 조건 체크
       const checkResult = this.#checkRegisterValue(userInfo)
@@ -60,11 +94,34 @@ class User {
       }
 
       // 암호화 및 저장
-      userInfo = await this.#encryptPsword(userInfo);
+      userInfo = await this.#encryptPassword(userInfo);
       return await UserStorage.save(userInfo);
       
     } catch (err) {
       return { code: 400, message: '요청한 데이터 형식이 올바르지 않습니다.' };
+    }
+  };
+
+  async login() {
+    let userInfo = this.body;
+    try {
+      const user = await UserStorage.getUserInfo(userInfo);
+      if (user) {
+        if (await this.#checkPassword(userInfo.password, user.password)) {
+          // 로그인 토큰 처리
+          const accessToken = await this.#createAccessToken(user.userId);
+          const refreshToken = await this.#createRefreshToken();
+
+          // refreshToken 저장
+          await TokenStorage.save(refreshToken, user.userId);
+
+          return { code: 200, accessToken, refreshToken };
+        }
+      }
+      return { code: 412, message: '닉네임 또는 패스워드를 확인해주세요.' };
+
+    } catch (err) {
+      return { code: 400, message: '로그인에 실패하였습니다.' };
     }
   };
 }
