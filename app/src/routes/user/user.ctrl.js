@@ -7,7 +7,7 @@ const process = {
     const user = new User(req.body);
     const response = await user.register();
 
-    return res.status(200).json(response);
+    return res.status(response.code).json({ message: response.message });
   }, 
   login: async (req, res) => {
     // const user = new User(req.body);
