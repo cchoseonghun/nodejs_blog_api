@@ -1,6 +1,8 @@
 'use strict';
 
-const { Like } = require('../sequelize/models');
+const { Like, Post, User } = require('../sequelize/models');
+const { QueryTypes } = require("sequelize"); 
+const { sequelize } = require("../sequelize/models/index"); 
 
 class LikeStorage {
 
@@ -52,6 +54,32 @@ class LikeStorage {
         }
       })
       .catch((err) => {
+        reject(err);
+      });
+    });
+  };
+  
+  static findAll(userId) {
+    return new Promise(async (resolve, reject) => {
+      const query 
+      = `SELECT 
+          p.postId, p.userId, p.title, p.content, p.createdAt, p.updatedAt
+          , (SELECT count(userId) FROM Likes AS l WHERE postId = p.postId GROUP BY l.postId) AS likes
+        FROM Likes AS l 
+        LEFT JOIN Posts AS p 
+          ON l.postId = p.postId
+        WHERE l.userId = ?
+        ORDER BY likes DESC;`; 
+
+      await sequelize.query(query, { 
+        type: QueryTypes.SELECT,
+        replacements: [userId], 
+      })
+      .then((result) => {
+        resolve(result);
+      })
+      .catch((err) => {
+        console.log(err);
         reject(err);
       });
     });

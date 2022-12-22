@@ -32,6 +32,17 @@ class Like {
       return { code: 400, message: '게시글 좋아요에 실패하였습니다.' };
     }
   }
+
+  async list() {
+    const { userId } = this.body;
+    try {
+      const posts = await LikeStorage.findAll(userId);
+      return { code: 200, data: posts };
+    } catch (err) {
+      console.log(err);
+      return { code: 400, message: '좋아요 게시글 조회에 실패하였습니다.' };
+    }
+  };
 }
 
 module.exports = Like;
