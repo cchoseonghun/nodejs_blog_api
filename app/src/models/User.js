@@ -39,7 +39,7 @@ class User {
     });
   };
 
-  #checkRegisterValue(userInfo) {
+  #checkBodyValue(userInfo) {
     let checkResult = {};
 
     // 비밀번호가 일치하지 않는 경우
@@ -61,7 +61,7 @@ class User {
     let userInfo = this.body;
     try {
       // input값에 대해 여러 조건 체크
-      const checkResult = this.#checkRegisterValue(userInfo)
+      const checkResult = this.#checkBodyValue(userInfo);
       if (Object.keys(checkResult).length) {
         return { code: checkResult.code, message: checkResult.message };
       }

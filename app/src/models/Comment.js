@@ -8,7 +8,7 @@ class Comment {
     this.body = body;
   };
 
-  #checkWriteValue(commentInfo) {
+  #checkBodyValue(commentInfo) {
     let checkResult = {};
 
     if (commentInfo.comment.length == 0) {
@@ -21,7 +21,7 @@ class Comment {
   async write() {
     let commentInfo = this.body;
     try {
-      const checkResult = this.#checkWriteValue(commentInfo)
+      const checkResult = this.#checkBodyValue(commentInfo);
       if (Object.keys(checkResult).length) {
         return { code: checkResult.code, message: checkResult.message };
       }
@@ -48,6 +48,28 @@ class Comment {
       return { code: 404, message: '게시글이 존재하지 않습니다.' };
     } catch (err) {
       return { code: 400, message: '댓글 조회에 실패하였습니다.' };
+    }
+  };
+
+  async update() {
+    let commentInfo = this.body;
+    try {
+      const checkResult = this.#checkBodyValue(commentInfo);
+      if (Object.keys(checkResult).length) {
+        return { code: checkResult.code, message: checkResult.message };
+      }
+
+      const post = await PostStorage.findOne(commentInfo.postId);
+      if (post) {
+        const comment = await CommentStorage.findOne(commentInfo.commentId);
+        if (comment) {
+          return await CommentStorage.update(commentInfo);
+        }
+        return { code: 404, message: '댓글이 존재하지 않습니다.' };
+      } 
+      return { code: 404, message: '게시글이 존재하지 않습니다.' };
+    } catch (err) {
+      return { code: 400, message: '댓글 수정에 실패하였습니다.' };
     }
   };
 }

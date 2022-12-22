@@ -42,6 +42,46 @@ class CommentStorage {
       });
     });
   };
+
+  static findOne(commentId) {
+    return new Promise((resolve, reject) => {
+      Comment.findOne({ 
+        where: { commentId }, 
+      })
+      .then((comment) => {
+        resolve(comment);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+    });
+  };
+
+  static update(commentInfo) {
+    const commentId = commentInfo.commentId;
+    const postId = commentInfo.postId;
+    const userId = commentInfo.userId;
+    const comment = commentInfo.comment;
+
+    return new Promise((resolve, reject) => {
+      Comment.update({ 
+        comment
+      }, {
+        where: { commentId, postId, userId }
+      })
+      .then((result) => {
+        if (result[0] > 0) {  
+          resolve({ code: 200, message: '댓글을 수정하였습니다.' });
+        } else {
+          resolve({ code: 400, message: '댓글 수정이 정상적으로 처리되지 않았습니다.' });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        reject(err);
+      });
+    });
+  };
 }
 
 module.exports = CommentStorage;

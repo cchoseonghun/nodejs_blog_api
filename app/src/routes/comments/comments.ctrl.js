@@ -26,6 +26,17 @@ const process = {
       return res.status(response.code).json({ message: response.message });
     }
   }, 
+
+  update: async (req, res) => {
+    const { postId, commentId } = req.params;
+    req.body.postId = postId;
+    req.body.commentId = commentId;
+    req.body.userId = res.locals.userId;
+    const comment = new Comment(req.body);
+
+    const response = await comment.update();
+    return res.status(response.code).json({ message: response.message });
+  }, 
 }
 
 module.exports = {
