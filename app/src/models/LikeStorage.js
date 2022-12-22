@@ -50,7 +50,7 @@ class LikeStorage {
         if (result > 0) {  
           resolve({ code: 200, message: '게시글의 좋아요를 취소하였습니다.' });
         } else {
-          resolve({ code: 400, message: '게시글 좋아요 취소가 정상적으로 처리되지 않았습니다.' });
+          resolve({ code: 500, message: '게시글 좋아요 취소가 정상적으로 처리되지 않았습니다.' });
         }
       })
       .catch((err) => {

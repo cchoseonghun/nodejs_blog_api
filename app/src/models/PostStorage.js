@@ -100,7 +100,7 @@ class PostStorage {
         if (result[0] > 0) {  
           resolve({ code: 200, message: '게시글을 수정하였습니다.' });
         } else {
-          resolve({ code: 401, message: '게시글이 정상적으로 수정되지 않았습니다.' });
+          resolve({ code: 500, message: '게시글이 정상적으로 수정되지 않았습니다.' });
         }
       })
       .catch((err) => {
@@ -121,7 +121,7 @@ class PostStorage {
         if (result > 0) {  
           resolve({ code: 200, message: '게시글을 삭제하였습니다.' });
         } else {
-          resolve({ code: 401, message: '게시글이 정상적으로 삭제되지 않았습니다.' });
+          resolve({ code: 500, message: '게시글이 정상적으로 삭제되지 않았습니다.' });
         }
       })
       .catch((err) => {

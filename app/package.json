@@ -17,7 +17,10 @@
     "express": "^4.18.2",
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.3.3",
-    "sequelize": "^6.27.0"
+    "sequelize": "^6.27.0",
+    "swagger-autogen": "^2.22.0",
+    "swagger-jsdoc": "^6.2.7",
+    "swagger-ui-express": "^4.6.0"
   },
   "devDependencies": {
     "sequelize-cli": "^6.5.2"

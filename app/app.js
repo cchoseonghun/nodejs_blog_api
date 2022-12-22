@@ -19,7 +19,8 @@ const likes = require('./src/routes/likes');
 
 app.use('/api', [user, posts, comments, likes]);
 
-app.use('/', (req, res) => {
-  res.send('Hi, SeongHun');
-});
+const swaggerUi = require("swagger-ui-express");
+const swaggerFile = require("./src/config/swagger/swagger-output.json");
+
+app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 module.exports = app;

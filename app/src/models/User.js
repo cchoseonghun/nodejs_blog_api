@@ -44,7 +44,7 @@ class User {
 
     // 비밀번호가 일치하지 않는 경우
     if (userInfo.password !== userInfo.confirmPassword) {
-      checkResult.code = 412;
+      checkResult.code = 401;
       checkResult.message = '패스워드가 일치하지 않습니다.';
     }
     // ID 형식이 비정상적인 경우
@@ -69,7 +69,7 @@ class User {
       // 닉네임 중복 체크
       const user = await UserStorage.getUserInfo(userInfo);
       if (user) {
-        return { code: 412, message: '중복된 닉네임입니다.' };
+        return { code: 401, message: '중복된 닉네임입니다.' };
       }
 
       // 암호화 및 저장
@@ -97,7 +97,7 @@ class User {
           return { code: 200, accessToken, refreshToken };
         }
       }
-      return { code: 412, message: '닉네임 또는 패스워드를 확인해주세요.' };
+      return { code: 401, message: '닉네임 또는 패스워드를 확인해주세요.' };
 
     } catch (err) {
       return { code: 400, message: '로그인에 실패하였습니다.' };

@@ -1,0 +1,1072 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Node.js Blog API",
+    "description": "Express, Sequelize로 구현된 회원, 게시글, 댓글, 좋아요 기능이 들어간 블로그 API",
+    "version": "1.0.0"
+  },
+  "host": "http://3.34.196.250",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/api/register": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "description": "회원가입",
+        "parameters": [
+          {
+            "name": "",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nickname": {
+                  "type": "string",
+                  "example": "Developer"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "1234"
+                },
+                "confirmPassword": {
+                  "type": "string",
+                  "example": "1234"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "회원가입 성공",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "회원가입에 성공하였습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "예외 케이스에서 처리하지 못한 에러",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "요청한 데이터 형식이 올바르지 않습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "닉네임이 중복된 경우 or 비밀번호가 일치하지 않는 경우",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "중복된 닉네임입니다. or 패스워드가 일치하지 않습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/login": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "description": "로그인",
+        "parameters": [
+          {
+            "name": "",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nickname": {
+                  "type": "string",
+                  "example": "Developer"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "1234"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "예외 케이스에서 처리하지 못한 에러",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "로그인에 실패하였습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "해당하는 유저가 존재하지 않는 경우",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "닉네임 또는 패스워드를 확인해주세요."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/posts": {
+      "post": {
+        "tags": [
+          "Posts"
+        ],
+        "description": "게시글 작성",
+        "parameters": [
+          {
+            "name": "",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "안녕하세요 게시글 제목입니다."
+                },
+                "content": {
+                  "type": "string",
+                  "example": "안녕하세요 content 입니다."
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "게시글 작성 성공",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "게시글 작성에 성공하였습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "예외 케이스에서 처리하지 못한 에러",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "게시글 작성에 실패하였습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "권한 없음"
+          },
+          "404": {
+            "description": "찾을 수 없음"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Posts"
+        ],
+        "description": "게시글 조회",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "게시글 조회 성공",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "postId": {
+                        "type": "string",
+                        "example": "2"
+                      },
+                      "userId": {
+                        "type": "string",
+                        "example": "1"
+                      },
+                      "nickname": {
+                        "type": "string",
+                        "example": "Developer"
+                      },
+                      "title": {
+                        "type": "string",
+                        "example": "안녕하세요 2번째 게시글 제목입니다."
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "example": "2022-12-14T03:39:20.389Z"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "example": "2022-12-14T03:39:20.389Z"
+                      },
+                      "likes": {
+                        "type": "number",
+                        "example": 0
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "예외 케이스에서 처리하지 못한 에러",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "게시글 조회에 실패하였습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/posts/{postId}": {
+      "get": {
+        "tags": [
+          "Posts"
+        ],
+        "description": "게시글 상세 조회",
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "게시글 상세 조회 성공",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "postId": {
+                      "type": "string",
+                      "example": "2"
+                    },
+                    "userId": {
+                      "type": "string",
+                      "example": "1"
+                    },
+                    "nickname": {
+                      "type": "string",
+                      "example": "Developer"
+                    },
+                    "title": {
+                      "type": "string",
+                      "example": "안녕하세요 2번째 게시글 제목입니다."
+                    },
+                    "content": {
+                      "type": "string",
+                      "example": "안녕하세요 content 입니다."
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2022-12-14T03:39:20.389Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2022-12-14T03:39:20.389Z"
+                    },
+                    "likes": {
+                      "type": "number",
+                      "example": 0
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "예외 케이스에서 처리하지 못한 에러",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "게시글 조회에 실패하였습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Posts"
+        ],
+        "description": "게시글 수정",
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "안녕하세요 수정된 게시글 입니다."
+                },
+                "content": {
+                  "type": "string",
+                  "example": "안녕하세요 수정된 content 입니다."
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "게시글 수정 성공",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "게시글을 수정하였습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "예외 케이스에서 처리하지 못한 에러",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "게시글 수정에 실패하였습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "권한 없음"
+          },
+          "404": {
+            "description": "해당하는 게시글이 존재하지 않는 경우",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "게시글이 존재하지 않습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "게시글 수정이 실패한 경우",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "게시글이 정상적으로 수정되지 않았습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Posts"
+        ],
+        "description": "게시글 삭제",
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "게시글 삭제 성공",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "게시글을 삭제하였습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "예외 케이스에서 처리하지 못한 에러",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "게시글 삭제에 실패하였습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "권한 없음"
+          },
+          "404": {
+            "description": "해당하는 게시글이 존재하지 않는 경우",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "게시글이 존재하지 않습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "게시글 삭제에 실패한 경우",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "게시글이 정상적으로 삭제되지 않았습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/posts/{postId}/comments": {
+      "post": {
+        "tags": [
+          "Comments"
+        ],
+        "description": "댓글 작성",
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "comment": {
+                  "type": "string",
+                  "example": "안녕하세요 댓글 입니다."
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "댓글 작성 성공",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "댓글을 작성하였습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "예외 케이스에서 처리하지 못한 에러",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "댓글 작성에 실패하였습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "권한 없음"
+          },
+          "404": {
+            "description": "해당하는 게시글이 존재하지 않는 경우",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "게시글이 존재하지 않습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Comments"
+        ],
+        "description": "댓글 목록 조회",
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "댓글 목록 조회 성공",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "commentId": {
+                        "type": "string",
+                        "example": "2"
+                      },
+                      "userId": {
+                        "type": "string",
+                        "example": "1"
+                      },
+                      "nickname": {
+                        "type": "string",
+                        "example": "Developer"
+                      },
+                      "comment": {
+                        "type": "string",
+                        "example": "안녕하세요 2번째 댓글입니다."
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "example": "2022-12-14T03:39:20.389Z"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "example": "2022-12-14T03:39:20.389Z"
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "예외 케이스에서 처리하지 못한 에러",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "게시글 조회에 실패하였습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "해당하는 게시글이 존재하지 않는 경우",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "게시글이 존재하지 않습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/posts/{postId}/comments/{commentId}": {
+      "put": {
+        "tags": [
+          "Comments"
+        ],
+        "description": "댓글 수정",
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "commentId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "comment": {
+                  "type": "string",
+                  "example": "수정된 댓글입니다."
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "댓글 수정 성공",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "댓글을 수정하였습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "예외 케이스에서 처리하지 못한 에러",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "댓글 수정에 실패하였습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "권한 없음"
+          },
+          "404": {
+            "description": "해당하는 게시글이 존재하지 않는 경우 or 해당하는 댓글이 존재하지 않는 경우",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "게시글이 존재하지 않습니다. or 댓글이 존재하지 않습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "댓글 수정이 실패한 경우",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "댓글 수정이 정상적으로 처리되지 않았습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Comments"
+        ],
+        "description": "댓글 삭제",
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "commentId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "댓글 삭제 성공",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "댓글을 삭제하였습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "예외 케이스에서 처리하지 못한 에러",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "댓글 삭제에 실패하였습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "권한 없음"
+          },
+          "404": {
+            "description": "해당하는 게시글이 존재하지 않는 경우 or 해당하는 댓글이 존재하지 않는 경우",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "게시글이 존재하지 않습니다. or 댓글이 존재하지 않습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "댓글 삭제가 실패한 경우",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "댓글 삭제가 정상적으로 처리되지 않았습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/likes/posts": {
+      "get": {
+        "tags": [
+          "Likes"
+        ],
+        "description": "좋아요 게시글 조회",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "게시글 조회 성공",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "postId": {
+                        "type": "string",
+                        "example": "4"
+                      },
+                      "userId": {
+                        "type": "string",
+                        "example": "1"
+                      },
+                      "nickname": {
+                        "type": "string",
+                        "example": "Developer"
+                      },
+                      "title": {
+                        "type": "string",
+                        "example": "안녕하세요 4번째 게시글 제목입니다."
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "example": "2022-12-14T03:39:20.389Z"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "example": "2022-12-14T03:39:20.389Z"
+                      },
+                      "likes": {
+                        "type": "number",
+                        "example": 1
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "예외 케이스에서 처리하지 못한 에러",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "좋아요 게시글 조회에 실패하였습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "권한 없음"
+          },
+          "404": {
+            "description": "찾을 수 없음"
+          }
+        }
+      }
+    },
+    "/api/posts/{postId}/like": {
+      "put": {
+        "tags": [
+          "Likes"
+        ],
+        "description": "게시글 좋아요",
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "게시글 좋아요 취소 성공",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "게시글의 좋아요를 취소하였습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "201": {
+            "description": "게시글 좋아요 등록 성공",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "게시글의 좋아요를 등록하였습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "예외 케이스에서 처리하지 못한 에러",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "게시글 좋아요에 실패하였습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "권한 없음"
+          },
+          "404": {
+            "description": "해당하는 게시글이 존재하지 않는 경우",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "게시글이 존재하지 않습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "좋아요 취소가 실패한 경우",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "게시글 좋아요 취소가 정상적으로 처리되지 않았습니다."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
