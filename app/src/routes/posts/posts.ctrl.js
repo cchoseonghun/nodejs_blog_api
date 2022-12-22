@@ -43,6 +43,16 @@ const process = {
 
     return res.status(response.code).json({ message: response.message });
   }, 
+
+  delete: async (req, res) => {
+    const { postId } = req.params;
+    req.body.postId = postId;
+    req.body.userId = res.locals.userId;
+    const post = new Post(req.body);
+    const response = await post.delete();
+
+    return res.status(response.code).json({ message: response.message });
+  }, 
 }
 
 module.exports = {

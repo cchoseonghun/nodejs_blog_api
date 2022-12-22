@@ -11,5 +11,6 @@ router.get('/posts/:postId', ctrl.process.detail);
 
 router.post('/posts', authMiddleware, ctrl.process.write);
 router.put('/posts/:postId', authMiddleware, ctrl.process.update);
+router.delete('/posts/:postId', authMiddleware, ctrl.process.delete);
 
 module.exports = router;

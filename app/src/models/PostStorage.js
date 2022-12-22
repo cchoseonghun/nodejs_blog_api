@@ -88,6 +88,42 @@ class PostStorage {
     });
   };
 
+  static delete(postInfo) {
+    const postId = postInfo.postId;
+    const userId = postInfo.userId;
+
+    return new Promise((resolve, reject) => {
+      Post.destroy({
+        where: { postId, userId }
+      })
+      .then((result) => {
+        if (result > 0) {  
+          resolve({ code: 200, message: '게시글을 삭제하였습니다.' });
+        } else {
+          resolve({ code: 401, message: '게시글이 정상적으로 삭제되지 않았습니다.' });
+        }
+      })
+      .catch((err) => {
+        reject(err);
+      });
+      // Post.update({ 
+      //   deletedAt: Sequelize.literal('NOW()') // 안됨
+      // }, {
+      //   where: { postId, userId }
+      // })
+      // .then((result) => {
+      //   console.log('result: ', result);
+      //   if (result[0] > 0) {  
+      //     resolve({ code: 200, message: '게시글을 삭제하였습니다.' });
+      //   } else {
+      //     resolve({ code: 401, message: '게시글이 정상적으로 삭제되지 않았습니다.' });
+      //   }
+      // })
+      // .catch((err) => {
+      //   reject(err);
+      // });
+    });
+  };
 }
 
 module.exports = PostStorage;

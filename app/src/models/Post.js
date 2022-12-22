@@ -40,9 +40,27 @@ class Post {
   async update() {
     let postInfo = this.body;
     try {
-      return await PostStorage.update(postInfo);
+      const post = await PostStorage.findOne(postInfo.postId);
+      if (post) {
+        return await PostStorage.update(postInfo);
+      } 
+      return { code: 404, message: '게시글이 존재하지 않습니다.' };
     } catch (err) {
       return { code: 400, message: '게시글 수정에 실패하였습니다.' };
+    }
+  };
+
+  async delete() {
+    let postInfo = this.body;
+    try {
+      const post = await PostStorage.findOne(postInfo.postId);
+      if (post) {
+        return await PostStorage.delete(postInfo);
+      } 
+      return { code: 404, message: '게시글이 존재하지 않습니다.' };
+    } catch (err) {
+      console.log(err)
+      return { code: 400, message: '게시글 삭제에 실패하였습니다.' };
     }
   };
 }
