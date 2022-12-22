@@ -1,7 +1,5 @@
 'use strict';
 
-require('dotenv').config();
-
 const PostStorage = require('./PostStorage');
 
 class Post {
