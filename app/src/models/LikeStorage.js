@@ -1,6 +1,6 @@
 'use strict';
 
-const { Like, Post, User } = require('../sequelize/models');
+const { Like } = require('../sequelize/models');
 const { QueryTypes } = require("sequelize"); 
 const { sequelize } = require("../sequelize/models/index"); 
 

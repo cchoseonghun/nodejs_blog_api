@@ -1,6 +1,8 @@
 'use strict';
 
-const { Post, User } = require('../sequelize/models');
+const { Post } = require('../sequelize/models');
+const { QueryTypes } = require("sequelize"); 
+const { sequelize } = require("../sequelize/models/index"); 
 
 class PostStorage {
 
@@ -21,42 +23,61 @@ class PostStorage {
   };
 
   static findAll() {
-    return new Promise((resolve, reject) => {
-      Post.findAll({ 
-        raw: true,
-        attributes: ['postId', 'userId', 'User.nickname', 'title', 'createdAt', 'updatedAt'], 
-        order: [
-          ['postId', 'DESC']
-        ], 
-        include: [{
-          model: User, 
-          attributes: [], 
-        }], 
-      })
-      .then((posts) => {
-        resolve(posts);
-      })
-      .catch((err) => {
-        reject(err);
-      });
+    return new Promise(async (resolve, reject) => {
+      const query
+      = `SELECT 
+          p.postId, p.userId, nickname, title, p.createdAt, p.updatedAt
+          ,IFNULL((
+            SELECT count(userId) 
+            FROM Likes AS l 
+            WHERE postId = p.postId 
+            GROUP BY l.postId)
+          , 0) 
+          AS likes
+        FROM Posts AS p
+        LEFT JOIN Users AS u
+        ON p.userId = u.userId
+        ORDER BY postId DESC;`;
+
+        await sequelize.query(query, { 
+          type: QueryTypes.SELECT,
+        })
+        .then((result) => {
+          resolve(result);
+        })
+        .catch((err) => {
+          console.log(err);
+          reject(err);
+        });
     });
   };
 
   static findOne(postId) {
-    return new Promise((resolve, reject) => {
-      Post.findOne({ 
-        where: { postId }, 
-        raw: true,
-        attributes: ['postId', 'userId', 'User.nickname', 'title', 'content', 'createdAt', 'updatedAt'], 
-        include: [{
-          model: User, 
-          attributes: [], 
-        }], 
+    return new Promise(async (resolve, reject) => {
+      const query 
+      = `SELECT 
+          p.postId, p.userId, nickname, title, content, p.createdAt, p.updatedAt
+          ,IFNULL((
+            SELECT count(userId) 
+            FROM Likes AS l 
+            WHERE postId = p.postId 
+            GROUP BY l.postId)
+          , 0) 
+          AS likes
+        FROM Posts AS p
+        LEFT JOIN Users AS u
+        ON p.userId = u.userId
+        WHERE p.postId = ?;`;
+
+      await sequelize.query(query, { 
+        type: QueryTypes.SELECT,
+        replacements: [postId], 
       })
-      .then((post) => {
-        resolve(post);
+      .then(([result]) => {  // sequelize.query로 받는 형태가 array 타입이라 객제 구조 분해 할당을 통해 받음
+        resolve(result);
       })
       .catch((err) => {
+        console.log(err);
         reject(err);
       });
     });
