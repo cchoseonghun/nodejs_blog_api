@@ -38,6 +38,7 @@ const process = {
     const { postId } = req.params;
     req.body.postId = postId;
     req.body.userId = res.locals.userId;
+    
     const post = new Post(req.body);
     const response = await post.update();
 
@@ -48,6 +49,7 @@ const process = {
     const { postId } = req.params;
     req.body.postId = postId;
     req.body.userId = res.locals.userId;
+
     const post = new Post(req.body);
     const response = await post.delete();
 

@@ -8,6 +8,7 @@ const process = {
     const { postId } = req.params;
     req.body.postId = postId;
     req.body.userId = res.locals.userId;
+    
     const comment = new Comment(req.body);
     const response = await comment.write();
 
@@ -17,6 +18,7 @@ const process = {
   list: async (req, res) => {
     const { postId } = req.params;
     req.body.postId = postId;
+
     const comment = new Comment(req.body);
     const response = await comment.list();
 
@@ -32,9 +34,22 @@ const process = {
     req.body.postId = postId;
     req.body.commentId = commentId;
     req.body.userId = res.locals.userId;
-    const comment = new Comment(req.body);
 
+    const comment = new Comment(req.body);
     const response = await comment.update();
+
+    return res.status(response.code).json({ message: response.message });
+  }, 
+
+  delete: async (req, res) => {
+    const { postId, commentId } = req.params;
+    req.body.postId = postId;
+    req.body.commentId = commentId;
+    req.body.userId = res.locals.userId;
+
+    const comment = new Comment(req.body);
+    const response = await comment.delete();
+
     return res.status(response.code).json({ message: response.message });
   }, 
 }

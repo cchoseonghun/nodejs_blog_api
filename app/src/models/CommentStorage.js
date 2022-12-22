@@ -77,7 +77,28 @@ class CommentStorage {
         }
       })
       .catch((err) => {
-        console.log(err);
+        reject(err);
+      });
+    });
+  };
+
+  static delete(commentInfo) {
+    const commentId = commentInfo.commentId;
+    const postId = commentInfo.postId;
+    const userId = commentInfo.userId;
+
+    return new Promise((resolve, reject) => {
+      Comment.destroy({ 
+        where: { commentId, postId, userId }
+      })
+      .then((result) => {
+        if (result > 0) {  
+          resolve({ code: 200, message: '댓글을 삭제하였습니다.' });
+        } else {
+          resolve({ code: 400, message: '댓글 삭제가 정상적으로 처리되지 않았습니다.' });
+        }
+      })
+      .catch((err) => {
         reject(err);
       });
     });

@@ -72,6 +72,23 @@ class Comment {
       return { code: 400, message: '댓글 수정에 실패하였습니다.' };
     }
   };
+
+  async delete() {
+    let commentInfo = this.body;
+    try {
+      const post = await PostStorage.findOne(commentInfo.postId);
+      if (post) {
+        const comment = await CommentStorage.findOne(commentInfo.commentId);
+        if (comment) {
+          return await CommentStorage.delete(commentInfo);
+        }
+        return { code: 404, message: '댓글이 존재하지 않습니다.' };
+      } 
+      return { code: 404, message: '게시글이 존재하지 않습니다.' };
+    } catch (err) {
+      return { code: 400, message: '댓글 삭제에 실패하였습니다.' };
+    }
+  };
 }
 
 module.exports = Comment;
