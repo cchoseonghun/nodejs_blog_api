@@ -26,7 +26,7 @@ class PostStorage {
         raw: true,
         attributes: ['postId', 'userId', 'User.nickname', 'title', 'createdAt', 'updatedAt'], 
         order: [
-          ['createdAt', 'DESC']
+          ['postId', 'DESC']
         ], 
         include: [{
           model: User, 

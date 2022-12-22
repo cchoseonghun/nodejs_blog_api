@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     postId: DataTypes.INTEGER,
     userId: DataTypes.INTEGER,
-    content: DataTypes.TEXT
+    comment: DataTypes.TEXT
   }, {
     sequelize,
     modelName: 'Comment',

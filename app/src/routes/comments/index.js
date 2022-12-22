@@ -6,8 +6,7 @@ const router = express.Router();
 const authMiddleware = require('../../config/authMiddleware');
 const ctrl = require('./comments.ctrl');
 
-// router.get('/posts', ctrl.process.list);
-// router.get('/posts/:postId', ctrl.process.detail);
+router.get('/posts/:postId/comments', ctrl.process.list);
 
 router.post('/posts/:postId/comments', authMiddleware, ctrl.process.write);
 // router.put('/posts/:postId', authMiddleware, ctrl.process.update);
