@@ -38,7 +38,6 @@ class Comment {
 
   async list() {
     let commentInfo = this.body;
-
     try {
       const post = await PostStorage.findOne(commentInfo.postId);
       if (post) {

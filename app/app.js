@@ -15,8 +15,9 @@ app.use(express.urlencoded({extended: true}));
 const user = require('./src/routes/user');
 const posts = require('./src/routes/posts');
 const comments = require('./src/routes/comments');
+const likes = require('./src/routes/likes');
 
-app.use('/api', [user, posts, comments]);
+app.use('/api', [user, posts, comments, likes]);
 
 app.use('/', (req, res) => {
   res.send('Hi, SeongHun');
