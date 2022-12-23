@@ -2,7 +2,7 @@
 
 회원, 게시글, 댓글, 좋아요 기능이 추가된 블로그 백엔드 서버   
 
-> 접속 URI: [http://3.34.196.250](http://3.34.196.250)
+> 접속 URI: <a href="http://3.34.196.250" target="_blank">http://3.34.196.250</a>
 
 ## 목차
 
@@ -12,7 +12,7 @@
 - [DB Schema](#db-schema)
 - [DB Diagram](#db-diagram)
 - [API](#api)
-- [구현 중 겪은 어려운 부분](#구현-중-겪은-어려운-부분)
+- [Problem Solving Cases](#problem-solving-cases)
 
 ## Install
 
@@ -60,7 +60,7 @@ JWT_REFRESH_EXPIRES=""
 
 <img src="./markdown/images/api.png" width="90%" title="api.png"></img>
 
-## 문제해결 사례
+## Problem Solving Cases
 
 - [복잡한 쿼리문을 Sequelize로 구현하기:](https://4sii.tistory.com/246)   
 Sequelize.query를 통해 raw query를 그대로 사용하는 방법으로 해결했다.
