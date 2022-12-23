@@ -3,9 +3,10 @@
 const express = require('express');
 const router = express.Router();
 
+const loginCheckMiddleware = require('../../config/loginCheckMiddleware');
 const ctrl = require('./user.ctrl');
 
-router.post('/register', ctrl.process.register
+router.post('/register', loginCheckMiddleware, ctrl.process.register
 //  #swagger.description = '회원가입'
 //  #swagger.tags = ['User']
 /*  #swagger.parameters[''] = {
@@ -36,7 +37,7 @@ router.post('/register', ctrl.process.register
 } */
 );
 
-router.post('/login', ctrl.process.login
+router.post('/login', loginCheckMiddleware, ctrl.process.login
 //  #swagger.description = '로그인'
 //  #swagger.tags = ['User']
 /*  #swagger.parameters[''] = {
@@ -56,6 +57,17 @@ router.post('/login', ctrl.process.login
             description: '해당하는 유저가 존재하지 않는 경우',
             schema: {
                 message: '닉네임 또는 패스워드를 확인해주세요.'
+            }
+} */
+);
+
+router.get('/logout', ctrl.process.logout
+//  #swagger.description = '로그아웃'
+//  #swagger.tags = ['User']
+/*  #swagger.responses[200] = {
+            description: '로그아웃 성공',
+            schema: {
+                message: '로그아웃 되었습니다.'
             }
 } */
 );

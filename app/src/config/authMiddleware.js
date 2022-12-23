@@ -1,8 +1,5 @@
 'use strict';
 
-const jwt = require('jsonwebtoken');
-const SECRET_KEY = process.env.JWT_SECRET_KEY;
-
 const TokenStorage = require('../models/TokenStorage');
 const TokenManager = require('../config/TokenManager');
 

@@ -23,6 +23,11 @@ const process = {
     return res.status(response.code).json({ message: response.message });
   }, 
     
+  logout: async (req, res) => {
+    res.clearCookie('accessToken');
+    res.clearCookie('refreshToken')
+    return res.status(200).json({ message: '로그아웃 되었습니다.' });
+  }
 }
 
 module.exports = {
