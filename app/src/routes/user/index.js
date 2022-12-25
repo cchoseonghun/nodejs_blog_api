@@ -30,9 +30,9 @@ router.post('/register', loginCheckMiddleware, ctrl.process.register
             }
 } */
 /*  #swagger.responses[401] = {
-            description: '닉네임이 중복된 경우 or 비밀번호가 일치하지 않는 경우',
+            description: '회원가입 입력 값 형식이 올바르지 않은 경우',
             schema: {
-                message: '중복된 닉네임입니다. or 패스워드가 일치하지 않습니다.'
+                message: '올바르지 않은 형식에 대한 메시지 출력'
             }
 } */
 );

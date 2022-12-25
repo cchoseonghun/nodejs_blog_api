@@ -41,18 +41,34 @@ class User {
 
   #checkBodyValue(userInfo) {
     let checkResult = {};
+    const nickname = userInfo.nickname;
+    const password = userInfo.password;
+    const confirmPassword = userInfo.confirmPassword;
 
     // 비밀번호가 일치하지 않는 경우
-    if (userInfo.password !== userInfo.confirmPassword) {
+    if (password !== confirmPassword) {
       checkResult.code = 401;
       checkResult.message = '패스워드가 일치하지 않습니다.';
     }
     // ID 형식이 비정상적인 경우
+    const nicknameRegex = /^[a-zA-Z0-9]{3,}$/g;
+    if (!nicknameRegex.test(nickname)) {
+      checkResult.code = 401;
+      checkResult.message = 'ID의 형식이 일치하지 않습니다.';
+    }
 
     // password 형식이 비정상적인 경우
+    const passwordRegex = /^.{4,}$/;
+    if (!passwordRegex.test(password)) {
+      checkResult.code = 401;
+      checkResult.message = '패스워드 형식이 일치하지 않습니다.';
+    }
 
     // password에 닉네임이 포함되어 있는 경우
-
+    if (password.includes(nickname)) {
+      checkResult.code = 401;
+      checkResult.message = '패스워드에 닉네임이 포함되어 있습니다.';
+    }
 
     return checkResult;
   };
