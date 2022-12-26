@@ -3,17 +3,16 @@
 const Comment = require('../../models/Comment');
 
 const process = {
-  
   write: async (req, res) => {
     const { postId } = req.params;
     req.body.postId = postId;
     req.body.userId = res.locals.userId;
-    
+
     const comment = new Comment(req.body);
     const response = await comment.write();
 
     return res.status(response.code).json({ message: response.message });
-  }, 
+  },
 
   list: async (req, res) => {
     const { postId } = req.params;
@@ -27,7 +26,7 @@ const process = {
     } else {
       return res.status(response.code).json({ message: response.message });
     }
-  }, 
+  },
 
   update: async (req, res) => {
     const { postId, commentId } = req.params;
@@ -39,7 +38,7 @@ const process = {
     const response = await comment.update();
 
     return res.status(response.code).json({ message: response.message });
-  }, 
+  },
 
   delete: async (req, res) => {
     const { postId, commentId } = req.params;
@@ -51,9 +50,9 @@ const process = {
     const response = await comment.delete();
 
     return res.status(response.code).json({ message: response.message });
-  }, 
-}
+  },
+};
 
 module.exports = {
-  process, 
-}
+  process,
+};

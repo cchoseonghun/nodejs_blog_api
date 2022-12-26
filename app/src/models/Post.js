@@ -5,7 +5,7 @@ const PostStorage = require('./PostStorage');
 class Post {
   constructor(body) {
     this.body = body;
-  };
+  }
 
   async write() {
     let postInfo = this.body;
@@ -14,7 +14,7 @@ class Post {
     } catch (err) {
       return { code: 400, message: '게시글 작성에 실패하였습니다.' };
     }
-  };
+  }
 
   async list() {
     try {
@@ -23,7 +23,7 @@ class Post {
     } catch (err) {
       return { code: 400, message: '게시글 조회에 실패하였습니다.' };
     }
-  };
+  }
 
   async detail() {
     try {
@@ -33,7 +33,7 @@ class Post {
     } catch (err) {
       return { code: 400, message: '게시글 조회에 실패하였습니다.' };
     }
-  };
+  }
 
   async update() {
     let postInfo = this.body;
@@ -41,12 +41,12 @@ class Post {
       const post = await PostStorage.findOne(postInfo.postId);
       if (post) {
         return await PostStorage.update(postInfo);
-      } 
+      }
       return { code: 404, message: '게시글이 존재하지 않습니다.' };
     } catch (err) {
       return { code: 400, message: '게시글 수정에 실패하였습니다.' };
     }
-  };
+  }
 
   async delete() {
     let postInfo = this.body;
@@ -54,13 +54,13 @@ class Post {
       const post = await PostStorage.findOne(postInfo.postId);
       if (post) {
         return await PostStorage.delete(postInfo);
-      } 
+      }
       return { code: 404, message: '게시글이 존재하지 않습니다.' };
     } catch (err) {
-      console.log(err)
+      console.log(err);
       return { code: 400, message: '게시글 삭제에 실패하였습니다.' };
     }
-  };
+  }
 }
 
 module.exports = Post;

@@ -6,7 +6,7 @@ const PostStorage = require('./PostStorage');
 class Comment {
   constructor(body) {
     this.body = body;
-  };
+  }
 
   #checkBodyValue(commentInfo) {
     let checkResult = {};
@@ -29,7 +29,7 @@ class Comment {
       const post = await PostStorage.findOne(commentInfo.postId);
       if (post) {
         return await CommentStorage.save(commentInfo);
-      } 
+      }
       return { code: 404, message: '게시글이 존재하지 않습니다.' };
     } catch (err) {
       return { code: 400, message: '댓글 작성에 실패하였습니다.' };
@@ -43,12 +43,12 @@ class Comment {
       if (post) {
         const comments = await CommentStorage.findAll(commentInfo.postId);
         return { code: 200, data: comments };
-      } 
+      }
       return { code: 404, message: '게시글이 존재하지 않습니다.' };
     } catch (err) {
       return { code: 400, message: '댓글 조회에 실패하였습니다.' };
     }
-  };
+  }
 
   async update() {
     let commentInfo = this.body;
@@ -65,12 +65,12 @@ class Comment {
           return await CommentStorage.update(commentInfo);
         }
         return { code: 404, message: '댓글이 존재하지 않습니다.' };
-      } 
+      }
       return { code: 404, message: '게시글이 존재하지 않습니다.' };
     } catch (err) {
       return { code: 400, message: '댓글 수정에 실패하였습니다.' };
     }
-  };
+  }
 
   async delete() {
     let commentInfo = this.body;
@@ -82,12 +82,12 @@ class Comment {
           return await CommentStorage.delete(commentInfo);
         }
         return { code: 404, message: '댓글이 존재하지 않습니다.' };
-      } 
+      }
       return { code: 404, message: '게시글이 존재하지 않습니다.' };
     } catch (err) {
       return { code: 400, message: '댓글 삭제에 실패하였습니다.' };
     }
-  };
+  }
 }
 
 module.exports = Comment;

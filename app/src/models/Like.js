@@ -6,7 +6,7 @@ const PostStorage = require('./PostStorage');
 class Like {
   constructor(body) {
     this.body = body;
-  };
+  }
 
   async #checkAlreadyLiked(likeInfo) {
     const like = await LikeStorage.findOne(likeInfo);
@@ -26,7 +26,7 @@ class Like {
           // 좋아요 취소
           return await LikeStorage.delete(likeInfo);
         }
-      } 
+      }
       return { code: 404, message: '게시글이 존재하지 않습니다.' };
     } catch (err) {
       return { code: 400, message: '게시글 좋아요에 실패하였습니다.' };
@@ -42,7 +42,7 @@ class Like {
       console.log(err);
       return { code: 400, message: '좋아요 게시글 조회에 실패하였습니다.' };
     }
-  };
+  }
 }
 
 module.exports = Like;
