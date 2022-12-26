@@ -3,14 +3,13 @@
 const Post = require('../../models/Post');
 
 const process = {
-  
   write: async (req, res) => {
     req.body.userId = res.locals.userId;
     const post = new Post(req.body);
     const response = await post.write();
 
     return res.status(response.code).json({ message: response.message });
-  }, 
+  },
 
   list: async (req, res) => {
     const post = new Post(req.body);
@@ -21,7 +20,7 @@ const process = {
     } else {
       return res.status(response.code).json({ message: response.message });
     }
-  }, 
+  },
 
   detail: async (req, res) => {
     const post = new Post(req.params);
@@ -32,18 +31,18 @@ const process = {
     } else {
       return res.status(response.code).json({ message: response.message });
     }
-  }, 
+  },
 
   update: async (req, res) => {
     const { postId } = req.params;
     req.body.postId = postId;
     req.body.userId = res.locals.userId;
-    
+
     const post = new Post(req.body);
     const response = await post.update();
 
     return res.status(response.code).json({ message: response.message });
-  }, 
+  },
 
   delete: async (req, res) => {
     const { postId } = req.params;
@@ -54,9 +53,9 @@ const process = {
     const response = await post.delete();
 
     return res.status(response.code).json({ message: response.message });
-  }, 
-}
+  },
+};
 
 module.exports = {
-  process, 
-}
+  process,
+};

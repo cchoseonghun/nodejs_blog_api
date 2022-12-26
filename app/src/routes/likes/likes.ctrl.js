@@ -3,7 +3,6 @@
 const Like = require('../../models/Like');
 
 const process = {
-  
   like: async (req, res) => {
     const { postId } = req.params;
     req.body.postId = postId;
@@ -13,7 +12,7 @@ const process = {
     const response = await like.like();
 
     return res.status(response.code).json({ message: response.message });
-  }, 
+  },
 
   list: async (req, res) => {
     req.body.userId = res.locals.userId;
@@ -26,9 +25,9 @@ const process = {
     } else {
       return res.status(response.code).json({ message: response.message });
     }
-  }, 
-}
+  },
+};
 
 module.exports = {
-  process, 
-}
+  process,
+};

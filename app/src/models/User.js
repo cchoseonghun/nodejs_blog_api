@@ -10,13 +10,13 @@ const TokenManager = require('../config/TokenManager');
 class User {
   constructor(body) {
     this.body = body;
-  };
+  }
 
   async #encryptPassword(userInfo) {
     const saltRounds = parseInt(process.env.BCRYPT_SALT);
 
     return new Promise((resolve, reject) => {
-      bcrypt.hash(userInfo.password, saltRounds, (err, hash)=>{
+      bcrypt.hash(userInfo.password, saltRounds, (err, hash) => {
         if (err) {
           reject(`${err}`);
         } else {
@@ -25,11 +25,11 @@ class User {
         }
       });
     });
-  };
+  }
 
   async #checkPassword(beforePassword, afterPassword) {
     return new Promise((resolve, reject) => {
-      bcrypt.compare(beforePassword, afterPassword, (err, result)=>{
+      bcrypt.compare(beforePassword, afterPassword, (err, result) => {
         if (err) {
           reject(`${err}`);
         } else {
@@ -37,7 +37,7 @@ class User {
         }
       });
     });
-  };
+  }
 
   #checkBodyValue(userInfo) {
     let checkResult = {};
@@ -71,7 +71,7 @@ class User {
     }
 
     return checkResult;
-  };
+  }
 
   async register() {
     let userInfo = this.body;
@@ -81,7 +81,7 @@ class User {
       if (Object.keys(checkResult).length) {
         return { code: checkResult.code, message: checkResult.message };
       }
-      
+
       // 닉네임 중복 체크
       const user = await UserStorage.getUserInfo(userInfo);
       if (user) {
@@ -91,11 +91,10 @@ class User {
       // 암호화 및 저장
       userInfo = await this.#encryptPassword(userInfo);
       return await UserStorage.save(userInfo);
-      
     } catch (err) {
       return { code: 400, message: '요청한 데이터 형식이 올바르지 않습니다.' };
     }
-  };
+  }
 
   async login() {
     const userInfo = this.body;
@@ -114,11 +113,10 @@ class User {
         }
       }
       return { code: 401, message: '닉네임 또는 패스워드를 확인해주세요.' };
-
     } catch (err) {
       return { code: 400, message: '로그인에 실패하였습니다.' };
     }
-  };
+  }
 }
 
 module.exports = User;
