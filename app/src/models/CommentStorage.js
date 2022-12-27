@@ -19,7 +19,8 @@ class CommentStorage {
     });
   }
 
-  static findAll(postId) {
+  static findAll(postId, page) {
+    const LIMIT = parseInt(process.env.COMMENTS_PAGE_LIMIT);
     return new Promise((resolve, reject) => {
       Comment.findAll({
         where: { postId },
@@ -32,6 +33,8 @@ class CommentStorage {
             attributes: [],
           },
         ],
+        offset: (page-1)*LIMIT, 
+        limit: LIMIT
       })
         .then((comments) => {
           resolve(comments);

@@ -8,7 +8,7 @@ class Post {
   }
 
   async write() {
-    let postInfo = this.body;
+    const postInfo = this.body;
     try {
       return await PostStorage.save(postInfo);
     } catch (err) {
@@ -17,8 +17,9 @@ class Post {
   }
 
   async list() {
+    const { page } = this.body;
     try {
-      const posts = await PostStorage.findAll();
+      const posts = await PostStorage.findAll(page);
       return { code: 200, data: posts };
     } catch (err) {
       return { code: 400, message: '게시글 조회에 실패하였습니다.' };
@@ -36,7 +37,7 @@ class Post {
   }
 
   async update() {
-    let postInfo = this.body;
+    const postInfo = this.body;
     try {
       const post = await PostStorage.findOne(postInfo.postId);
       if (post) {
@@ -49,7 +50,7 @@ class Post {
   }
 
   async delete() {
-    let postInfo = this.body;
+    const postInfo = this.body;
     try {
       const post = await PostStorage.findOne(postInfo.postId);
       if (post) {

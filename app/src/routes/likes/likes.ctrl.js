@@ -15,6 +15,7 @@ const process = {
   },
 
   list: async (req, res) => {
+    req.body.page = req.query.p || 1;
     req.body.userId = res.locals.userId;
 
     const like = new Like(req.body);

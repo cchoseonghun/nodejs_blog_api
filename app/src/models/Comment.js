@@ -37,11 +37,11 @@ class Comment {
   }
 
   async list() {
-    let commentInfo = this.body;
+    const { postId, page } = this.body;
     try {
-      const post = await PostStorage.findOne(commentInfo.postId);
+      const post = await PostStorage.findOne(postId);
       if (post) {
-        const comments = await CommentStorage.findAll(commentInfo.postId);
+        const comments = await CommentStorage.findAll(postId, page);
         return { code: 200, data: comments };
       }
       return { code: 404, message: '게시글이 존재하지 않습니다.' };
