@@ -243,7 +243,14 @@
           "Posts"
         ],
         "description": "게시글 조회",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "p",
+            "in": "query",
+            "description": "게시글 목록 페이지네이션",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "게시글 조회 성공",
@@ -655,6 +662,12 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "p",
+            "in": "query",
+            "description": "댓글 목록 페이지네이션",
+            "type": "string"
           }
         ],
         "responses": {
@@ -925,7 +938,14 @@
           "Likes"
         ],
         "description": "좋아요 게시글 조회",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "p",
+            "in": "query",
+            "description": "좋아요 게시글 목록 페이지네이션",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "게시글 조회 성공",
