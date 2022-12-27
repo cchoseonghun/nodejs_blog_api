@@ -15,6 +15,7 @@ const process = {
   },
 
   list: async (req, res) => {
+    req.body.page = req.query.p || 1;
     const { postId } = req.params;
     req.body.postId = postId;
 

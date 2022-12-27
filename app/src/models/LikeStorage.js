@@ -58,7 +58,9 @@ class LikeStorage {
     });
   }
 
-  static findAll(userId) {
+  static findAll(userId, page) {
+    const LIMIT = parseInt(process.env.POSTS_PAGE_LIMIT);
+
     return new Promise(async (resolve, reject) => {
       const query = `SELECT 
                       p.postId, p.userId, p.title, p.content, p.createdAt, p.updatedAt
@@ -67,12 +69,14 @@ class LikeStorage {
                     LEFT JOIN Posts AS p 
                       ON l.postId = p.postId
                     WHERE l.userId = ?
-                    ORDER BY likes DESC;`;
+                    ORDER BY likes DESC
+                    LIMIT ?, ?
+                    ;`;
 
       await sequelize
         .query(query, {
           type: QueryTypes.SELECT,
-          replacements: [userId],
+          replacements: [userId, (page-1)*LIMIT, LIMIT],
         })
         .then((result) => {
           resolve(result);

@@ -1,5 +1,7 @@
 'use strict';
 
+require('dotenv').config();
+
 const { Post } = require('../sequelize/models');
 const { QueryTypes } = require('sequelize');
 const { sequelize } = require('../sequelize/models/index');
@@ -21,7 +23,9 @@ class PostStorage {
     });
   }
 
-  static findAll() {
+  static findAll(page) {
+    const LIMIT = parseInt(process.env.POSTS_PAGE_LIMIT);
+
     return new Promise(async (resolve, reject) => {
       const query = `SELECT 
                       p.postId, p.userId, nickname, title, p.createdAt, p.updatedAt
@@ -35,11 +39,14 @@ class PostStorage {
                     FROM Posts AS p
                     LEFT JOIN Users AS u
                     ON p.userId = u.userId
-                    ORDER BY postId DESC;`;
+                    ORDER BY postId DESC
+                    LIMIT ?, ?
+                    ;`;
 
       await sequelize
         .query(query, {
           type: QueryTypes.SELECT,
+          replacements: [(page-1)*LIMIT, LIMIT],
         })
         .then((result) => {
           resolve(result);

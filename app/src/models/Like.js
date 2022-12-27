@@ -34,9 +34,9 @@ class Like {
   }
 
   async list() {
-    const { userId } = this.body;
+    const { userId, page } = this.body;
     try {
-      const posts = await LikeStorage.findAll(userId);
+      const posts = await LikeStorage.findAll(userId, page);
       return { code: 200, data: posts };
     } catch (err) {
       console.log(err);

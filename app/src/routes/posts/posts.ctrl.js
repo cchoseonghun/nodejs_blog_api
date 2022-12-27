@@ -12,6 +12,7 @@ const process = {
   },
 
   list: async (req, res) => {
+    req.body.page = req.query.p || 1;
     const post = new Post(req.body);
     const response = await post.list();
 
