@@ -38,6 +38,10 @@ router.get(
   ctrl.process.list
   //  #swagger.description = '게시글 조회'
   //  #swagger.tags = ['Posts']
+  /*  #swagger.parameters['p'] = {
+            in: 'query',
+            description: '게시글 목록 페이지네이션',
+} */
   /*  #swagger.responses[200] = {
             description: '게시글 조회 성공',
             schema: {

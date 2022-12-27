@@ -43,6 +43,10 @@ router.get(
   ctrl.process.list
   //  #swagger.description = '댓글 목록 조회'
   //  #swagger.tags = ['Comments']
+  /*  #swagger.parameters['p'] = {
+            in: 'query',
+            description: '댓글 목록 페이지네이션',
+} */
   /*  #swagger.responses[200] = {
             description: '댓글 목록 조회 성공',
             schema: {
